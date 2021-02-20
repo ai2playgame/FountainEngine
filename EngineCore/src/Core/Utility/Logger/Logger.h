@@ -1,7 +1,5 @@
 ﻿#pragma once
 #include <string>
-#include <fmt/format.h>
-#include <fmt/core.h>
 
 #define CURRENT_REPORT_DATA fne::LogReportData{__FILE__,__func__,__LINE__}
 #define LOG_DEBUG(category, log) fne::Logger::Log(category,CURRENT_REPORT_DATA,fne::LogLevel::Debug,log)
@@ -9,6 +7,13 @@
 #define LOG_WARN(category, log)  fne::Logger::Log(category,CURRENT_REPORT_DATA,fne::LogLevel::Warn,log)
 #define LOG_ERROR(category, log) fne::Logger::Log(category,CURRENT_REPORT_DATA,fne::LogLevel::Error,log)
 #define LOG_FATAL(category, log) fne::Logger::Log(category,CURRENT_REPORT_DATA,fne::LogLevel::Fatal,log)
+
+#define CURRENT_REPORT_DATA_W fne::LogReportDataW{__FILEW__,__func__,__LINE__}
+#define LOG_DEBUG_W(category, log) fne::Logger::Log(category,CURRENT_REPORT_DATA_W,fne::LogLevel::Debug,log)
+#define LOG_INFO_W(category, log)  fne::Logger::Log(category,CURRENT_REPORT_DATA_W,fne::LogLevel::Info,log)
+#define LOG_WARN_W(category, log)  fne::Logger::Log(category,CURRENT_REPORT_DATA_W,fne::LogLevel::Warn,log)
+#define LOG_ERROR_W(category, log) fne::Logger::Log(category,CURRENT_REPORT_DATA_W,fne::LogLevel::Error,log)
+#define LOG_FATAL_W(category, log) fne::Logger::Log(category,CURRENT_REPORT_DATA_W,fne::LogLevel::Fatal,log)
 
 namespace fne {
 
@@ -18,37 +23,26 @@ struct LogReportData {
 	int line;
 };
 
+struct LogReportDataW {
+	std::wstring fileName;
+	std::string funcName;	// __file__のワイド文字列版は存在しないため
+	int line;
+};
+
 enum class LogLevel { Debug = 0, Info, Warn, Error, Fatal };
 
-// TODO: ワイド文字列に対応する
 class Logger {
 public:
 	static inline void SetLogLevel(LogLevel newLevel) { m_loglevel = newLevel; }
 	
-	static void Log(const std::string& category, const LogReportData& report, const LogLevel level, const std::string& message) {
-#ifndef _DEBUG
-		return;
-#endif
-		if (level < m_loglevel) {
-			return;
-		}
-		if (level < LogLevel::Debug || level > LogLevel::Fatal) {
-			return;
-		}
-
-		auto levelText = m_loglevelTexts[static_cast<int>(level)];
-
-		// 1. [WARN] [parent/category1] "ログメッセージ" (__FILE__ __LINE_ __func__)
-		OutputDebugStringA(fmt::format("[{0}] [{1}] \"{2}\" ({3} {4} {5})\n",
-			levelText ,category, message,
-			report.fileName, report.line, report.funcName).c_str());
-		return;
-	}
+	static void Log(const std::string& category, const LogReportData& report, const LogLevel level, const std::string& message);
+	static void Log(const std::wstring& category, const LogReportDataW& report, const LogLevel level, const std::wstring& message);
 
 private:
 
 	static LogLevel m_loglevel;
 	static const std::string m_loglevelTexts[];
+	static const std::wstring m_loglevelTextsW[];
 };
 
 }

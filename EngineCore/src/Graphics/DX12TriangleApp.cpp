@@ -3,7 +3,7 @@
 #include "DX12CoreHelper.h"
 #include "Win32Application.h"
 
-#include <iostream> // debug用
+#include "Core/Utility/Logger/Logger.h"
 
 fne::DX12TriangleApp::DX12TriangleApp(UINT width, UINT height, std::wstring name)
 	: DX12AppBase(width, height, name)
@@ -174,7 +174,7 @@ void fne::DX12TriangleApp::LoadAssets()
 		UINT compileFlags = 0;
 #endif
 		// Not std::cout
-		std::wcout << "ShadePath: " << GetAssetFullPath(L"shader.hlsl").c_str() << std::endl;
+		LOG_DEBUG_W(L"Graphics/Core", fmt::format(L"ShaderPath: {}", GetAssetFullPath(L"shaders.hlsl")));
 
 		ThrowIfFailed(D3DCompileFromFile(GetAssetFullPath(L"shaders.hlsl").c_str(),
 			nullptr, nullptr, "VSMain", "vs_5_0",
