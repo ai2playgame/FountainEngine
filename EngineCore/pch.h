@@ -16,3 +16,5 @@
 #include <wrl.h>
 #include <shellapi.h>
 
+#include <fmt/core.h>
+#include <fmt/format.h>

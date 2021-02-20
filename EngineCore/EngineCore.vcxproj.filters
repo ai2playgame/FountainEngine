@@ -37,6 +37,9 @@
     <ClCompile Include="src\Graphics\Win32Application.cpp">
       <Filter>src\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Utility\Logger\Logger.cpp">
+      <Filter>src\Core\Utility\Logger</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

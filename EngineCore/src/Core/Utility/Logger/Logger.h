@@ -1,6 +1,14 @@
 ﻿#pragma once
 #include <string>
+#include <fmt/format.h>
 #include <fmt/core.h>
+
+#define CURRENT_REPORT_DATA fne::LogReportData{__FILE__,__func__,__LINE__}
+#define LOG_DEBUG(category, log) fne::Logger::Log(category,CURRENT_REPORT_DATA,fne::LogLevel::Debug,log)
+#define LOG_INFO(category, log)  fne::Logger::Log(category,CURRENT_REPORT_DATA,fne::LogLevel::Info,log)
+#define LOG_WARN(category, log)  fne::Logger::Log(category,CURRENT_REPORT_DATA,fne::LogLevel::Warn,log)
+#define LOG_ERROR(category, log) fne::Logger::Log(category,CURRENT_REPORT_DATA,fne::LogLevel::Error,log)
+#define LOG_FATAL(category, log) fne::Logger::Log(category,CURRENT_REPORT_DATA,fne::LogLevel::Fatal,log)
 
 namespace fne {
 
@@ -10,9 +18,9 @@ struct LogReportData {
 	int line;
 };
 
-
 enum class LogLevel { Debug = 0, Info, Warn, Error, Fatal };
 
+// TODO: ワイド文字列に対応する
 class Logger {
 public:
 	static inline void SetLogLevel(LogLevel newLevel) { m_loglevel = newLevel; }
@@ -36,20 +44,12 @@ public:
 			report.fileName, report.line, report.funcName).c_str());
 		return;
 	}
+
 private:
+
 	static LogLevel m_loglevel;
 	static const std::string m_loglevelTexts[];
 };
 
 }
-
-fne::LogLevel fne::Logger::m_loglevel = fne::LogLevel::Error;
-const std::string fne::Logger::m_loglevelTexts[] = { "DEBUG", " INFO", " WARN", "ERROR", "FATAL" };
-
-#define CURRENT_REPORT_DATA fne::LogReportData{__FILE__,__func__,__LINE__}
-#define LOG_DEBUG(category, log) fne::Logger::Log(category,CURRENT_REPORT_DATA,fne::LogLevel::Debug,log)
-#define LOG_INFO(category, log)  fne::Logger::Log(category,CURRENT_REPORT_DATA,fne::LogLevel::Info,log)
-#define LOG_WARN(category, log)  fne::Logger::Log(category,CURRENT_REPORT_DATA,fne::LogLevel::Warn,log)
-#define LOG_ERROR(category, log) fne::Logger::Log(category,CURRENT_REPORT_DATA,fne::LogLevel::Error,log)
-#define LOG_FATAL(category, log) fne::Logger::Log(category,CURRENT_REPORT_DATA,fne::LogLevel::Fatal,log)
 
