@@ -13,36 +13,48 @@
     <Filter Include="shaders">
       <UniqueIdentifier>{7c5fb115-b340-436a-832c-e19d98167f58}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Core\Utility">
+      <UniqueIdentifier>{5d51aeb1-59c9-4b6f-adc0-208fffc71404}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Core\Utility\Log">
+      <UniqueIdentifier>{5b4ae3d4-56b0-4310-af27-409f2bb3b15f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Graphics">
+      <UniqueIdentifier>{94e5ac91-aac5-4e3a-b0fd-53eeba143fa1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Core\Win32Application.cpp">
-      <Filter>src\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Core\DX12AppBase.cpp">
-      <Filter>src\Core</Filter>
-    </ClCompile>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="src\Core\DX12TriangleApp.cpp">
-      <Filter>src\Core</Filter>
+    <ClCompile Include="src\Graphics\DX12AppBase.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\DX12TriangleApp.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Win32Application.cpp">
+      <Filter>src\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Core\Win32Application.h">
-      <Filter>src\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Core\DX12AppBase.h">
-      <Filter>src\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Core\DX12CoreHelper.h">
-      <Filter>src\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Core\DX12TriangleApp.h">
-      <Filter>src\Core</Filter>
-    </ClInclude>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="src\Core\Utility\Log\Logger.h">
+      <Filter>src\Core\Utility\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\DX12AppBase.h">
+      <Filter>src\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\DX12CoreHelper.h">
+      <Filter>src\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\DX12TriangleApp.h">
+      <Filter>src\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Win32Application.h">
+      <Filter>src\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="shaders.hlsl">
