@@ -4,11 +4,12 @@
     <Filter Include="src">
       <UniqueIdentifier>{f4f33d7c-747c-4e96-93de-c503bb88d761}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\main.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
+    <Filter Include="src\core">
+      <UniqueIdentifier>{d0b39a2d-d5b0-413f-b605-13d2bc6d614e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\graphics">
+      <UniqueIdentifier>{06c2d7ec-809d-4373-b4db-1f3343fce514}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
