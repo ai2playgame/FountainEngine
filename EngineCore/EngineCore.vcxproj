@@ -114,7 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="src\Core\Utility\Log\Logger.h" />
+    <ClInclude Include="src\Core\Utility\Logger\Logger.h" />
     <ClInclude Include="src\Graphics\DX12AppBase.h" />
     <ClInclude Include="src\Graphics\DX12CoreHelper.h" />
     <ClInclude Include="src\Graphics\DX12TriangleApp.h" />

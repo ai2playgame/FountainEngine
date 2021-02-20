@@ -16,11 +16,11 @@
     <Filter Include="src\Core\Utility">
       <UniqueIdentifier>{5d51aeb1-59c9-4b6f-adc0-208fffc71404}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Core\Utility\Log">
-      <UniqueIdentifier>{5b4ae3d4-56b0-4310-af27-409f2bb3b15f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Graphics">
       <UniqueIdentifier>{94e5ac91-aac5-4e3a-b0fd-53eeba143fa1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Core\Utility\Logger">
+      <UniqueIdentifier>{5b4ae3d4-56b0-4310-af27-409f2bb3b15f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -40,9 +40,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="src\Core\Utility\Log\Logger.h">
-      <Filter>src\Core\Utility\Log</Filter>
-    </ClInclude>
     <ClInclude Include="src\Graphics\DX12AppBase.h">
       <Filter>src\Graphics</Filter>
     </ClInclude>
@@ -54,6 +51,9 @@
     </ClInclude>
     <ClInclude Include="src\Graphics\Win32Application.h">
       <Filter>src\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\Utility\Logger\Logger.h">
+      <Filter>src\Core\Utility\Logger</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
