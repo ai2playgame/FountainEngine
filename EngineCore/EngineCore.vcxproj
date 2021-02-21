@@ -67,7 +67,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;fmt\fmtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;fmt\fmtd.lib;DirectXTex\Debug\DirectXTex.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>d3d12.dll</DelayLoadDLLs>
       <AdditionalLibraryDirectories>$(SolutionDir)external\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -94,7 +94,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;fmt\fmt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;fmt\fmt.lib;DirectXTex\Release\DirectXTex.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>d3d12.dll</DelayLoadDLLs>
       <AdditionalLibraryDirectories>$(SolutionDir)external\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -109,6 +109,7 @@
     </ClCompile>
     <ClCompile Include="src\Core\Utility\Logger\Logger.cpp" />
     <ClCompile Include="src\Graphics\DX12AppBase.cpp" />
+    <ClCompile Include="src\Graphics\DX12DrawTextureApp.cpp" />
     <ClCompile Include="src\Graphics\DX12TriangleApp.cpp" />
     <ClCompile Include="src\Graphics\Win32Application.cpp" />
     <ClCompile Include="src\Main.cpp" />
@@ -118,6 +119,7 @@
     <ClInclude Include="src\Core\Utility\Logger\Logger.h" />
     <ClInclude Include="src\Graphics\DX12AppBase.h" />
     <ClInclude Include="src\Graphics\DX12CoreHelper.h" />
+    <ClInclude Include="src\Graphics\DX12DrawTextureApp.h" />
     <ClInclude Include="src\Graphics\DX12TriangleApp.h" />
     <ClInclude Include="src\Graphics\Win32Application.h" />
   </ItemGroup>

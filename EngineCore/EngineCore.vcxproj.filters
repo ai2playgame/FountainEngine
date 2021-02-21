@@ -22,6 +22,12 @@
     <Filter Include="src\Core\Utility\Logger">
       <UniqueIdentifier>{5b4ae3d4-56b0-4310-af27-409f2bb3b15f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Graphics\Command">
+      <UniqueIdentifier>{155c9f37-2aee-4e40-a4ef-50838adda82e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Graphics\Device">
+      <UniqueIdentifier>{6f79facb-d629-498f-8d1f-f09c96acdb14}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -40,6 +46,9 @@
     <ClCompile Include="src\Core\Utility\Logger\Logger.cpp">
       <Filter>src\Core\Utility\Logger</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\DX12DrawTextureApp.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -57,6 +66,9 @@
     </ClInclude>
     <ClInclude Include="src\Core\Utility\Logger\Logger.h">
       <Filter>src\Core\Utility\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\DX12DrawTextureApp.h">
+      <Filter>src\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

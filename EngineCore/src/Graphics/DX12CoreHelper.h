@@ -7,6 +7,7 @@
 #pragma once
 #include "pch.h"
 #include <stdexcept>
+#include "Core/Utility/Logger/Logger.h"
 
 using Microsoft::WRL::ComPtr;
 
