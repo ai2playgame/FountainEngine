@@ -178,7 +178,75 @@ void fne::DX12DrawTextureApp::LoadAssets()
 			LOG_ERROR("Graphics/shader", "Failed to compole the pixel shader file");
 		}
 
-		// TODO: 02/21未明ここまで
+		D3D12_INPUT_ELEMENT_DESC inputElementDescs[] =
+		{
+			{"POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
+			{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
+		};
+
+		D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc{};
+		psoDesc.InputLayout = { inputElementDescs, _countof(inputElementDescs) };
+		psoDesc.pRootSignature = m_rootSignature.Get();
+		psoDesc.VS = CD3DX12_SHADER_BYTECODE(vertexShader.Get());
+		psoDesc.PS = CD3DX12_SHADER_BYTECODE(pixelShader.Get());
+		psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+		psoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
+		psoDesc.DepthStencilState.DepthEnable = FALSE;
+		psoDesc.DepthStencilState.StencilEnable = FALSE;
+		psoDesc.SampleMask = UINT_MAX;
+		psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+		psoDesc.NumRenderTargets = 1;
+		psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+		psoDesc.SampleDesc.Count = 1;
+		if (FAILED(m_device->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&m_pipelineState)))) {
+			LOG_ERROR("Graphics/init", "Failed CreateGraphicsPipelineState()");
+		}
+		if (FAILED(m_device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_commandAllocator.Get(),
+			m_pipelineState.Get(), IID_PPV_ARGS(&m_commandList)))) {
+			LOG_ERROR("Graphics/init", "Failed CreateCommandList()");
+		}
+		if (FAILED(m_commandList->Close())) {
+			LOG_ERROR("Graphics/init", "Failed commandList::close()");
+		}
+		
+		// 頂点データの作成
+		{
+			Vertex triangleVertices[] = {
+				{ {0.0f, 0.25f * m_aspectRatio, 0.0f}, {0.5f, 0.0f} },
+				{ {0.25f, -0.25f * m_aspectRatio, 0.0f}, {1.0f, 1.0f} },
+				{ {-0.25f, -0.25f * m_aspectRatio, 0.0f}, {0.0f, 1.0f} },
+			};
+			const UINT vertexBufferSize = sizeof(triangleVertices);
+			
+			// NOTE: 本来静的リソースはHEAP_TYPE_DEFAULTのほうがアクセスが高速なため
+			// ここでは簡単のためUPLOADヒープを使用する
+			const auto heapPropertyUpload = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+			const auto vertBufferDesc = CD3DX12_RESOURCE_DESC::Buffer(vertexBufferSize);
+			if (FAILED(m_device->CreateCommittedResource(
+				&heapPropertyUpload,
+				D3D12_HEAP_FLAG_NONE,
+				&vertBufferDesc,
+				D3D12_RESOURCE_STATE_GENERIC_READ,
+				nullptr, IID_PPV_ARGS(&m_vertexBuffer)))) {
+				LOG_ERROR("Graphics/init", "Failed Create VertexData Resources.");
+			}
+
+			// 頂点バッファをGPUにコピー
+			UINT8* pVertexDataBegin;
+			CD3DX12_RANGE readRange(0, 0);
+			if (FAILED(m_vertexBuffer->Map(0, &readRange, reinterpret_cast<void**>(&pVertexDataBegin)))) {
+				LOG_ERROR("Graphics/init", "Failed to copy veretexBuffer to GPU.");
+			}
+			memcpy(pVertexDataBegin, triangleVertices, sizeof(triangleVertices));
+
+			// 頂点バッファビューを初期化
+			m_vertexBufferView.BufferLocation = m_vertexBuffer->GetGPUVirtualAddress();
+			m_vertexBufferView.StrideInBytes = sizeof(Vertex);
+			m_vertexBufferView.SizeInBytes = vertexBufferSize;
+		}
+
+		// TODO: 2021/02/26ここまで
+
 	}
 }
 
