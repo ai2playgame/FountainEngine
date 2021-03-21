@@ -3,6 +3,7 @@
 #include "DX12CoreHelper.h"
 #include "Win32Application.h"
 #include "Core/Utility/Logger/Logger.h"
+#include "DirectXTex/DirectXTex.h"
 
 namespace {
 LPCWSTR shaderFileName = L"shaders.hlsl";
@@ -291,20 +292,30 @@ void fne::DX12DrawTextureApp::LoadAssets()
 
 		ComPtr<ID3D12Resource> textureUploadHeap;
 		{
-			// テクスチャ作成
+			// テクスチャデータを読み出してCPU上に保持する
+			DirectX::TexMetadata texMetaData{};
+			DirectX::ScratchImage scratchImg{};
+			// TODO: この関数を呼ばないとTexutureLoadに失敗するのはなぜ？
+			if (FAILED(CoInitializeEx(0, COINIT_MULTITHREADED))) {
+				LOG_ERROR("graphics/texture", "Failed to init COM object");
+			}
+			if (FAILED(DirectX::LoadFromWICFile(L"icon.jpg", DirectX::WIC_FLAGS_NONE, &texMetaData, scratchImg))) {
+				LOG_ERROR("graphics/texture", "Failed LoadFromWICFile()");
+			}
+			auto rawImageData = scratchImg.GetImage(0, 0, 0);
+
+			// テクスチャコピー先のヒープ作成
 			D3D12_RESOURCE_DESC textureDesc{};
-			textureDesc.MipLevels = 1;
-			textureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-			textureDesc.Width = TextureWidth;
-			textureDesc.Height = TextureHeight;
+			textureDesc.MipLevels = static_cast<UINT16>(texMetaData.mipLevels);
+			textureDesc.Format = texMetaData.format;
+			textureDesc.Width = texMetaData.width;
+			textureDesc.Height = static_cast<UINT>(texMetaData.height);
 			textureDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
-			textureDesc.DepthOrArraySize = 1;
+			textureDesc.DepthOrArraySize = static_cast<UINT16>(texMetaData.arraySize);
+			textureDesc.Dimension = static_cast<D3D12_RESOURCE_DIMENSION>(texMetaData.dimension);
 			textureDesc.SampleDesc.Count = 1;
 			textureDesc.SampleDesc.Quality = 0;
-			textureDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-			
 			auto heapPropertyDefault = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
-			auto heapPropertyUpload = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
 			if (FAILED(m_device->CreateCommittedResource(
 				&heapPropertyDefault, D3D12_HEAP_FLAG_NONE,
 				&textureDesc, D3D12_RESOURCE_STATE_COPY_DEST,
@@ -314,20 +325,20 @@ void fne::DX12DrawTextureApp::LoadAssets()
 
 			// GPUにアップロードするためのバッファを作成する
 			const auto resourceBuffer = CD3DX12_RESOURCE_DESC::Buffer(GetRequiredIntermediateSize(m_texture.Get(), 0, 1));
+			auto heapPropertyUpload = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
 			if (FAILED(m_device->CreateCommittedResource(
 				&heapPropertyUpload, D3D12_HEAP_FLAG_NONE,
 				&resourceBuffer, D3D12_RESOURCE_STATE_GENERIC_READ,
 				nullptr, IID_PPV_ARGS(&textureUploadHeap)))) {
 				LOG_ERROR("graphics/init", "Failed to CreateCommittedResource() for textureUploadHeap");
 			}
-
-			// 中間アップロードヒープにデータをコピーして
-			// アップロードヒープからTexture2Dへのデータコピーを予約する
+			
+			// GPU上のアップロードヒープに、CPU上のテクスチャデータをマッピング
 			std::vector<UINT8> texture = GenerateTextureData();
 			D3D12_SUBRESOURCE_DATA textureData{};
-			textureData.pData = &texture[0];
-			textureData.RowPitch = TextureWidth * TexturePixelSize;
-			textureData.SlicePitch = textureData.RowPitch * TextureHeight;
+			textureData.pData = rawImageData->pixels;
+			textureData.RowPitch = rawImageData->rowPitch;
+			textureData.SlicePitch = rawImageData->slicePitch;
 
 			UpdateSubresources(m_commandList.Get(), m_texture.Get(), textureUploadHeap.Get(), 0, 0, 1, &textureData);
 			auto textureResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(m_texture.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
