@@ -15,9 +15,17 @@ namespace fne {
 
 inline std::string HrToString(HRESULT hr)
 {
-    char s_str[64] = {};
-    sprintf_s(s_str, "HRESULT of 0x%08X", static_cast<UINT>(hr));
-    return std::string(s_str);
+    LPVOID lpStr;
+    FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
+                  FORMAT_MESSAGE_FROM_SYSTEM,
+                  nullptr,
+                  hr,
+                  MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                  (LPTSTR)&lpStr,
+                  0,
+                  nullptr);
+    
+    return std::string(static_cast<const char*>(lpStr));
 }
 
 class HrException : public std::runtime_error

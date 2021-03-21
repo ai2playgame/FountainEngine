@@ -26,8 +26,12 @@ private:
 	void LoadAssets();
 	void PopulateCommandList();
 	void WaitForPreviousFrame();
+	std::vector<UINT8> GenerateTextureData();
 
 	static const UINT FrameCount = 2;
+	static const UINT TextureWidth = 256;
+	static const UINT TextureHeight = 256;
+	static const UINT TexturePixelSize = 4;
 
 	struct Vertex {
 		DirectX::XMFLOAT3 pos;
@@ -44,6 +48,7 @@ private:
 	ComPtr<ID3D12CommandQueue> m_commandQueue;
 	ComPtr<ID3D12RootSignature> m_rootSignature;
 	ComPtr<ID3D12DescriptorHeap> m_rtvHeap;
+	ComPtr<ID3D12DescriptorHeap> m_srvHeap;
 	ComPtr<ID3D12PipelineState> m_pipelineState;
 	ComPtr<ID3D12GraphicsCommandList> m_commandList;
 	UINT m_rtvDescriptorSize;
@@ -51,6 +56,7 @@ private:
 	// Application resources
 	ComPtr<ID3D12Resource> m_vertexBuffer;
 	D3D12_VERTEX_BUFFER_VIEW m_vertexBufferView;
+	ComPtr<ID3D12Resource> m_texture;
 
 	// Synchronization object
 	UINT m_frameIndex;

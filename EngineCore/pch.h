@@ -13,6 +13,8 @@
 #include "d3dx12/d3dx12.h"
 
 #include <string>
+#include <algorithm>
+
 #include <wrl.h>
 #include <shellapi.h>
 

@@ -49,6 +49,9 @@
     <ClCompile Include="src\Graphics\DX12DrawTextureApp.cpp">
       <Filter>src\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\D3D12HelloTexture.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -68,6 +71,9 @@
       <Filter>src\Core\Utility\Logger</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\DX12DrawTextureApp.h">
+      <Filter>src\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\D3D12HelloTexture.h">
       <Filter>src\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
